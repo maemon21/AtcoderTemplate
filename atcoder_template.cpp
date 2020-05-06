@@ -1,23 +1,22 @@
-
-#include <iostream>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <algorithm>
-#include <string>
-#include <sstream>
-#include <complex>
-#include <vector>
-#include <list>
-#include <queue>
-#include <deque>
-#include <stack>
-#include <map>
-#include <set>
-#include <functional>
-#include <iomanip>
-#include <limits>
-//#include <bits/stdc++.h>
+// #include <iostream>
+// #include <cstdio>
+// #include <cstdlib>
+// #include <cstring>
+// #include <algorithm>
+// #include <string>
+// #include <sstream>
+// #include <complex>
+// #include <vector>
+// #include <list>
+// #include <queue>
+// #include <deque>
+// #include <stack>
+// #include <map>
+// #include <set>
+// #include <functional>
+// #include <iomanip>
+// #include <limits>
+#include <bits/stdc++.h>
 
 using namespace std;
 typedef long long ll; //10^18
@@ -39,7 +38,7 @@ typedef pair<ll, ll> p;
 #define MOD 1000000007LL
 #define WALL '#'
 
-//#define and &&
+//#define and &&a
 //#define or ||
 //#define not !
 //#define neq !=
@@ -296,7 +295,7 @@ vector<pair<char, ll>> decompose_str(string s)
 {
     vector<pair<char, ll>> moji_cnt;
     moji_cnt.pb(mp(s[0], 0));
-    REP(i, s.length())
+    REP(i, SZ(s))
     {
         if (moji_cnt.back().first == s[i])
         {
@@ -317,6 +316,7 @@ void ans_vec(vector<ll> ans)
     {
         cout << ans[i] << " ";
     }
+    cout << endl;
 }
 
 //
@@ -344,6 +344,26 @@ ll totalSumThird(ll x, ll y)
     return pow(totalSumFirst(x, y), 2);
 }
 
+// 約数
+vector<ll> makeDivisors(ll n)
+{
+    vector<ll> divisors;
+    for (ll i = 1; i * i <= n; i++)
+    {
+        if (n % i == 0)
+        {
+            divisors.pb(i);
+            if (i != n / i)
+            {
+                divisors.pb(n / i);
+            }
+        }
+    }
+    sort(ALL(divisors));
+
+    return divisors;
+}
+
 //
 // main関数
 //
@@ -354,25 +374,46 @@ signed main()
     //ios::sync_with_stdio(false);
 
     // 変数（scala）取得
-    //ll n;
-    //cin >> n;
+    ll x;
+    cin >> x;
 
     // 変数（vector）取得
-    //vector<ll> a(n);
-    //a = INV(n);
+    // vector<ll> a(n);
+    // a = INV(n);
     ////m=2;
     //vector<vector<ll>> vec(n, vector<ll>(m));
     //vec = INV2(n, m);
 
+    // vector<vector<ll>> a(3);
+    // REP(i, a)
+    // {
+    //     ll tmp;
+    //     cin >> tmp;
+    //     a[0].pb(tmp);
+    // }
+    // REP(i, b)
+    // {
+    //     ll tmp;
+    //     cin >> tmp;
+    //     a[1].pb(tmp);
+    // }
+    // REP(i, c)
+    // {
+    //     ll tmp;
+    //     cin >> tmp;
+    //     a[2].pb(tmp);
+    // }
+
     // 文字列取得
-    //string s;
-    //cin >> s;
+    // string s;
+    // cin >> s;
 
     // 文字列（vector）取得
-    //vector<string> str((int)a);
-    //REP(i, a) {
-    //    cin >> str[i];
-    //}
+    // vector<string> str(n);
+    // REP(i, n)
+    // {
+    //     cin >> str[i];
+    // }
 
     //
     // 実装部分
@@ -386,8 +427,18 @@ signed main()
 
     // 解答出力
     //cout << fixed << setprecision(15);
-    MSG(ans);
+    //MSG(ans);
     //ans_vec(ans);
 
     return 0;
 }
+
+//
+// memo
+//
+
+//for(ll i=0; i<n;i++)　// ループ
+//cout << << endl;    // 出力
+//sort(ALL(a), greater<ll>()); // 降順
+// abs(k)    // 絶対値
+// sqrt(n)    // ルート

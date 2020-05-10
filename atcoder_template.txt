@@ -84,8 +84,15 @@ bool chmin(T& a, const T& b)
 	return 0;
 }
 
+// グローバル変数宣言
+// 迷路用
 vector<ll> dy = { 0, 0, -1, 1, 0 };
 vector<ll> dx = { -1, 1, 0, 0, 0 };
+
+// 
+vector<ll> factorial = {};
+vector<ll> factorialInverse = {};
+
 
 //swap(a, b);
 //sort(arr, arr + n);	//昇順
@@ -263,7 +270,8 @@ ll bfs_maze(vector<string>& str, ll s_y, ll s_x, ll g_y, ll g_x)
 	vector<vector<ll>> v(SZ(str), vector<ll>(SZ(str[distance(str.begin(), max_element(ALL(str)))])));
 	v = map_vec(str);
 
-	que.push({ s_y, s_x, 1 });
+	// スタート地点を含めるのか
+	que.push({ s_y, s_x, 0 });
 	while (!que.empty())
 	{
 		Corr now = que.front();
@@ -309,32 +317,38 @@ ll iterativePower(ll a, ll n) {
 	return res;
 }
 
-// 階乗
-ll factorial(ll n) {
-	ll res = 1;
-
-	REP(i, n) {
-		res = res * (i + 1) % MOD;
-	}
-	return res;
-}
-
 // MODの逆元
-vector<ll> MODInverse(ll n, ll fact) {
+vector<ll> MODInverse(ll n, ll factN) {
 	vector<ll> res(n + 1);
-	res[n] = iterativePower(fact, MOD - 2);
+	res[n] = iterativePower(factN, MOD - 2);
 	REPR(i, n - 1) {
 		res[i] = res[i + 1] * (i + 1) % MOD;
 	}
 	return res;
 }
 
+// 階乗
+void factorialFunc(ll n) {
+	factorial.pb(1);
+	FOR(i, 1, n + 1) {
+		factorial.pb(factorial[i - 1] * i % MOD);
+	}
+	vector<ll> fact;
+	fact = MODInverse(n, factorial[n]);
+
+	REP(i, n + 1) {
+		factorialInverse.pb(fact[i]);
+	}
+}
+
+
 // 二項係数nCr
 ll comb(ll n, ll r) {
-	ll fact = factorial(n);
-	vector<ll> fact_inv;
-	fact_inv = MODInverse(n, fact);
-	return (fact * fact_inv[r]) % MOD * fact_inv[n - r] % MOD;
+	if (n < r) return 0;
+	//ll fact = factorial(n);
+	//vector<ll> fact_inv;
+	//fact_inv = MODInverse(n, fact);
+	return (factorial[n] * factorialInverse[r]) % MOD * factorialInverse[n - r] % MOD;
 }
 
 
@@ -457,12 +471,12 @@ signed main()
 	//ios::sync_with_stdio(false);
 
 	// 変数（scala）取得
-	ll w, h, n;
-	cin >> w >> h >> n;
+	ll n, k;
+	cin >> n >> k;
 
 	// 変数（vector）取得
-	 //vector<ll> a(n);
-	 //a = INV(n);
+	//vector<ll> a(n);
+	//a = INV(n);
 	////m=2;
 	//vector<vector<ll>> vec(n, vector<ll>(m));
 	//vec = INV2(n, m);
@@ -507,41 +521,22 @@ signed main()
 	//	//g[to].pb(from);
 	//}
 
+	// 迷路用string取得
+	 //vector<string> str(h);
+	 //REP(i, h) {
+		// cin >> str[i];
+	 //}
+
+	 // 二項係数を計算する際に必要
+	//factorialFunc(n);
+
 
 	//
 	// 実装部分
 	//
+	ll ans;
 
-	ll ans = 0;
 
-
-	ll w_min, w_max, h_min, h_max;
-	w_min = h_min = 0;
-	w_max = w;
-	h_max = h;
-
-	REP(i, n) {
-		ll x, y, a;
-		cin >> x >> y >> a;
-
-		if (a == 1) {
-			w_min = max(w_min, x);
-		}
-		else if (a == 2) {
-			w_max = min(w_max, x);
-		}
-		else if (a == 3) {
-			h_min = max(h_min, y);
-		}
-		else if (a == 4) {
-			h_max = min(h_max, y);
-		}
-	}
-
-	
-
-	ll tmp = (h_max - h_min) * (w_max - w_min);
-	if ((h_max - h_min) >= 0 && (w_max - w_min) >= 0) ans = tmp;
 
 
 

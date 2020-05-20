@@ -1,22 +1,22 @@
-#include <iostream>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <algorithm>
-#include <string>
-#include <sstream>
-#include <complex>
-#include <vector>
-#include <list>
-#include <queue>
-#include <deque>
-#include <stack>
-#include <map>
-#include <set>
-#include <functional>
-#include <iomanip>
-#include <limits>
-//#include <bits/stdc++.h>
+// #include <iostream>
+// #include <cstdio>
+// #include <cstdlib>
+// #include <cstring>
+// #include <algorithm>
+// #include <string>
+// #include <sstream>
+// #include <complex>
+// #include <vector>
+// #include <list>
+// #include <queue>
+// #include <deque>
+// #include <stack>
+// #include <map>
+// #include <set>
+// #include <functional>
+// #include <iomanip>
+// #include <limits>
+#include <bits/stdc++.h>
 
 using namespace std;
 typedef long long ll; //10^18
@@ -46,9 +46,9 @@ typedef pair<ll, ll> p;
 //#define neq !=
 //#define eq ==
 
-#define REP(i, n) for (ll i = 0; i < n; i++)	   // from 0 to n
-#define REPR(i, n) for (ll i = n; i >= 0; i--)	   // from n to 0
-#define FOR(i, m, n) for (ll i = m; i < n; i++)   // from m to n
+#define REP(i, n) for (ll i = 0; i < n; i++)	  // from 0 to n
+#define REPR(i, n) for (ll i = n; i >= 0; i--)	  // from n to 0
+#define FOR(i, m, n) for (ll i = m; i < n; i++)	  // from m to n
 #define FORR(i, m, n) for (ll i = m; i >= n; i--) // from m to n
 #define DBG(a) cout << #a << " : " << a << "\n";
 #define MSG(a) cout << a << "\n";
@@ -64,7 +64,7 @@ typedef pair<ll, ll> p;
 #define SND second
 
 template <class T>
-bool chmax(T& a, const T& b)
+bool chmax(T &a, const T &b)
 {
 	if (a < b)
 	{
@@ -74,7 +74,7 @@ bool chmax(T& a, const T& b)
 	return 0;
 }
 template <class T>
-bool chmin(T& a, const T& b)
+bool chmin(T &a, const T &b)
 {
 	if (b < a)
 	{
@@ -86,13 +86,12 @@ bool chmin(T& a, const T& b)
 
 // グローバル変数宣言
 // 迷路用
-vector<ll> dy = { 0, 0, -1, 1, 0 };
-vector<ll> dx = { -1, 1, 0, 0, 0 };
+vector<ll> dy = {0, 0, -1, 1, 0};
+vector<ll> dx = {-1, 1, 0, 0, 0};
 
-// 
+//
 vector<ll> factorial = {};
 vector<ll> factorialInverse = {};
-
 
 //swap(a, b);
 //sort(arr, arr + n);	//昇順
@@ -111,7 +110,7 @@ vector<ll> INV(ll n)
 {
 	vector<ll> v(n);
 	REP(i, n)
-		cin >> v[i];
+	cin >> v[i];
 	return v;
 }
 
@@ -130,7 +129,7 @@ vector<vector<ll>> INV2(ll n, ll m)
 }
 
 // index が条件を満たすかどうか
-bool isOK(vector<ll>& v, int index, int key)
+bool isOK(vector<ll> &v, int index, int key)
 {
 	if (v[index] >= key)
 		return true;
@@ -140,7 +139,7 @@ bool isOK(vector<ll>& v, int index, int key)
 
 // 汎用的な二分探索
 // sort
-ll bs(vector<ll>& v, ll key)
+ll bs(vector<ll> &v, ll key)
 {
 	int ng = -1;	//「index = 0」が条件を満たすこともあるので、初期値は -1
 	int ok = SZ(v); // 「index = a.size()-1」が条件を満たさないこともあるので、初期値は a.size()
@@ -174,8 +173,8 @@ ll gcd(ll a, ll b)
 }
 
 // 最小公倍数
-void lcm(ll a, ll b) {
-
+void lcm(ll a, ll b)
+{
 }
 
 // 素数判定
@@ -225,7 +224,7 @@ vector<ll> prime_factorization(ll n)
 // 迷路のマップ情報をベクトル化する
 // 通れるところを0に、壁を-1にする
 // スタート地点からの距離を格納するときなどに使う
-vector<vector<ll>> map_vec(vector<string>& str)
+vector<vector<ll>> map_vec(vector<string> &str)
 {
 	// SZ(str[0] = SZ(str[distance(str.begin(), max_element(ALL(str)))])
 	vector<vector<ll>> v(SZ(str), vector<ll>(SZ(str[distance(str.begin(), max_element(ALL(str)))]), (int)INF));
@@ -257,7 +256,7 @@ ll cnt_wall(vector<string> str)
 
 // 迷路用幅優先探索
 // フィールドの広さと壁の位置を受け取り、ゴールへの最短距離を返す
-ll bfs_maze(vector<string>& str, ll s_y, ll s_x, ll g_y, ll g_x)
+ll bfs_maze(vector<string> &str, ll s_y, ll s_x, ll g_y, ll g_x)
 {
 	struct Corr
 	{
@@ -271,7 +270,7 @@ ll bfs_maze(vector<string>& str, ll s_y, ll s_x, ll g_y, ll g_x)
 	v = map_vec(str);
 
 	// スタート地点を含めるのか
-	que.push({ s_y, s_x, 0 });
+	que.push({s_y, s_x, 0});
 	while (!que.empty())
 	{
 		Corr now = que.front();
@@ -281,7 +280,7 @@ ll bfs_maze(vector<string>& str, ll s_y, ll s_x, ll g_y, ll g_x)
 
 		REP(i, 4)
 		{
-			Corr next = { now.y + dy[i], now.x + dx[i], now.depth + 1 };
+			Corr next = {now.y + dy[i], now.x + dx[i], now.depth + 1};
 			// SZ(v[0] = SZ(v[distance(v.begin(), max_element(ALL(v)))])
 			if (0 <= (int)next.y && (int)next.y < SZ(v) && 0 <= (int)next.x && (int)next.x < SZ(v[distance(v.begin(), max_element(ALL(v)))]) && v[(int)next.y][(int)next.x] == INF)
 			{
@@ -307,10 +306,13 @@ vector<ll> cumulative_sum(vector<ll> a)
 }
 
 // 繰り返し二乗法 a^n
-ll iterativePower(ll a, ll n) {
+ll iterativePower(ll a, ll n)
+{
 	ll res = 1;
-	while (n > 0) {
-		if (n & 1)	res = (res * a) % MOD;
+	while (n > 0)
+	{
+		if (n & 1)
+			res = (res * a) % MOD;
 		a = a * a % MOD;
 		n >>= 1;
 	}
@@ -318,39 +320,44 @@ ll iterativePower(ll a, ll n) {
 }
 
 // MODの逆元
-vector<ll> MODInverse(ll n, ll factN) {
+vector<ll> MODInverse(ll n, ll factN)
+{
 	vector<ll> res(n + 1);
 	res[n] = iterativePower(factN, MOD - 2);
-	REPR(i, n - 1) {
+	REPR(i, n - 1)
+	{
 		res[i] = res[i + 1] * (i + 1) % MOD;
 	}
 	return res;
 }
 
 // 階乗
-void factorialFunc(ll n) {
+void factorialFunc(ll n)
+{
 	factorial.pb(1);
-	FOR(i, 1, n + 1) {
+	FOR(i, 1, n + 1)
+	{
 		factorial.pb(factorial[i - 1] * i % MOD);
 	}
 	vector<ll> fact;
 	fact = MODInverse(n, factorial[n]);
 
-	REP(i, n + 1) {
+	REP(i, n + 1)
+	{
 		factorialInverse.pb(fact[i]);
 	}
 }
 
-
 // 二項係数nCr
-ll comb(ll n, ll r) {
-	if (n < r) return 0;
+ll comb(ll n, ll r)
+{
+	if (n < r)
+		return 0;
 	//ll fact = factorial(n);
 	//vector<ll> fact_inv;
 	//fact_inv = MODInverse(n, fact);
 	return (factorial[n] * factorialInverse[r]) % MOD * factorialInverse[n - r] % MOD;
 }
-
 
 // 文字列を連続した文字ごとに分解
 vector<pair<char, ll>> decompose_str(string s)
@@ -427,56 +434,106 @@ vector<ll> makeDivisors(ll n)
 }
 
 // 尺取り法
-ll shakutori(vector<ll>& v, ll x) {
+ll shakutori(vector<ll> &v, ll x)
+{
 	ll res = 0;
 	ll n = SZ(v);
 
 	ll sum = 0;
 	ll right = 0;
 
-	REP(left, n) {
+	REP(left, n)
+	{
 
-		while (right < n && sum + v[right] <= x) {
+		while (right < n && sum + v[right] <= x)
+		{
 			sum += v[right];
 			right++;
 		}
 		res += (right - left);
 
-		if (right == left)	right++;
-		else sum -= v[left];
+		if (right == left)
+			right++;
+		else
+			sum -= v[left];
 	}
 
 	return res;
 }
 
-
-
 // 深さ優先探索
-void dfs(const Graph& g, ll x) {
-
+void dfs(const Graph &g, ll x)
+{
 }
 
 // 幅優先探索
-void bfs() {
+void bfs()
+{
+}
 
+// bit全探索
+void bitFullSearch(ll n)
+{
+	REP(bit, 1 << n)
+	{
+		vector<ll> vec;
+		REP(i, n)
+		{
+			if (bit >> i & 1)
+			{
+				vec.pb(i);
+			}
+		}
+	}
+}
+
+// 重複削除
+vector<ll> duplicateDeletion(vector<ll> vec)
+{
+	sort(ALL(vec));
+	vec.erase(unique(ALL(vec)), vec.end());
+	return vec;
+}
+
+// 文字列区切り
+vector<string> split(string s, string delim)
+{
+	if (s.empty())
+		return {};
+	if (delim.empty())
+		return {s};
+	int start = 0;
+	auto delim_pos = s.find(delim);
+	vector<string> ret_v;
+	while (delim_pos != string::npos)
+	{
+		if (start != delim_pos)
+			ret_v.push_back(s.substr(start, delim_pos - start)); // 残り文字列の先頭が区切り文字列だった時はvectorに追加しない
+		start = delim_pos + delim.size();
+		delim_pos = s.find(delim, start);
+	}
+	if (start < s.size())
+		ret_v.push_back(s.substr(start)); // 最後の区切り文字以降に文字がある場合
+	return ret_v;
 }
 
 //
 // main関数
 //
 
-signed main()
+signed
+main()
 {
 	//cin.tie(0);
 	//ios::sync_with_stdio(false);
 
 	// 変数（scala）取得
-	ll n, k;
-	cin >> n >> k;
+	ll n;
+	cin >> n;
 
 	// 変数（vector）取得
-	//vector<ll> a(n);
-	//a = INV(n);
+	// vector<ll> a(n);
+	// a = INV(n);
 	////m=2;
 	//vector<vector<ll>> vec(n, vector<ll>(m));
 	//vec = INV2(n, m);
@@ -522,30 +579,27 @@ signed main()
 	//}
 
 	// 迷路用string取得
-	 //vector<string> str(h);
-	 //REP(i, h) {
-		// cin >> str[i];
-	 //}
+	//vector<string> str(h);
+	//REP(i, h) {
+	// cin >> str[i];
+	//}
 
-	 // 二項係数を計算する際に必要
-	//factorialFunc(n);
+	// 二項係数を計算する際に必要
 
+	// factorialFunc(n);
 
 	//
 	// 実装部分
 	//
+
 	ll ans;
-
-
-
-
 
 	//
 	// 実装部分おわり
 	//
 
 	// 解答出力
-	//cout << fixed << setprecision(10);
+	// cout << fixed << setprecision(10);
 	MSG(ans);
 	//ans_vec(ans);
 
@@ -564,3 +618,4 @@ signed main()
 // ceil(n)	// 切り上げ
 // floor(n)	// 切り捨て
 // round(n)	// 四捨五入
+// map<ll, ll, greater<ll>> mp;	// mapの降順

@@ -1,22 +1,22 @@
-// #include <iostream>
-// #include <cstdio>
-// #include <cstdlib>
-// #include <cstring>
-// #include <algorithm>
-// #include <string>
-// #include <sstream>
-// #include <complex>
-// #include <vector>
-// #include <list>
-// #include <queue>
-// #include <deque>
-// #include <stack>
-// #include <map>
-// #include <set>
-// #include <functional>
-// #include <iomanip>
-// #include <limits>
-#include <bits/stdc++.h>
+#include <iostream>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <algorithm>
+#include <string>
+#include <sstream>
+#include <complex>
+#include <vector>
+#include <list>
+#include <queue>
+#include <deque>
+#include <stack>
+#include <map>
+#include <set>
+#include <functional>
+#include <iomanip>
+#include <limits>
+//#include <bits/stdc++.h>
 
 using namespace std;
 typedef long long ll; //10^18
@@ -36,6 +36,7 @@ typedef pair<ll, ll> p;
 
 #define EPS (1e-7)
 #define INF (1e9)
+#define INFLL (9223372036854775807LL)
 #define PI (acos(-1))
 #define MOD 1000000007LL
 #define WALL '#'
@@ -64,7 +65,7 @@ typedef pair<ll, ll> p;
 #define SND second
 
 template <class T>
-bool chmax(T &a, const T &b)
+bool chmax(T& a, const T& b)
 {
 	if (a < b)
 	{
@@ -74,7 +75,7 @@ bool chmax(T &a, const T &b)
 	return 0;
 }
 template <class T>
-bool chmin(T &a, const T &b)
+bool chmin(T& a, const T& b)
 {
 	if (b < a)
 	{
@@ -86,8 +87,8 @@ bool chmin(T &a, const T &b)
 
 // グローバル変数宣言
 // 迷路用
-vector<ll> dy = {0, 0, -1, 1, 0};
-vector<ll> dx = {-1, 1, 0, 0, 0};
+vector<ll> dy4 = { 0, 0, -1, 1, 0 }, dx4 = { -1, 1, 0, 0, 0 };
+vector<ll> dx8 = { -1,0,1,-1,1,-1,0,1 }, dy8 = { -1,-1,-1,0,0,1,1,1 };
 
 //
 vector<ll> factorial = {};
@@ -110,7 +111,7 @@ vector<ll> INV(ll n)
 {
 	vector<ll> v(n);
 	REP(i, n)
-	cin >> v[i];
+		cin >> v[i];
 	return v;
 }
 
@@ -129,17 +130,26 @@ vector<vector<ll>> INV2(ll n, ll m)
 }
 
 // index が条件を満たすかどうか
-bool isOK(vector<ll> &v, int index, int key)
+bool isOK(vector<ll>& v, int index, int key, bool flag)
 {
-	if (v[index] >= key)
-		return true;
-	else
-		return false;
+	if (flag) {
+
+		if (v[index] >= key)
+			return true;
+		else
+			return false;
+	}
+	else {
+		if (v[index] > key)
+			return true;
+		else
+			return false;
+	}
 }
 
 // 汎用的な二分探索
-// sort
-ll bs(vector<ll> &v, ll key)
+// flag == 1 >=, flag == 0 >
+ll bs(vector<ll>& v, ll key, bool flag)
 {
 	int ng = -1;	//「index = 0」が条件を満たすこともあるので、初期値は -1
 	int ok = SZ(v); // 「index = a.size()-1」が条件を満たさないこともあるので、初期値は a.size()
@@ -149,7 +159,7 @@ ll bs(vector<ll> &v, ll key)
 	{
 		int mid = (ok + ng) / 2;
 
-		if (isOK(v, mid, key))
+		if (isOK(v, mid, key, flag))
 			ok = mid;
 		else
 			ng = mid;
@@ -224,7 +234,7 @@ vector<ll> prime_factorization(ll n)
 // 迷路のマップ情報をベクトル化する
 // 通れるところを0に、壁を-1にする
 // スタート地点からの距離を格納するときなどに使う
-vector<vector<ll>> map_vec(vector<string> &str)
+vector<vector<ll>> map_vec(vector<string>& str)
 {
 	// SZ(str[0] = SZ(str[distance(str.begin(), max_element(ALL(str)))])
 	vector<vector<ll>> v(SZ(str), vector<ll>(SZ(str[distance(str.begin(), max_element(ALL(str)))]), (int)INF));
@@ -254,10 +264,18 @@ ll cnt_wall(vector<string> str)
 	return cnt;
 }
 
+
+// マップの範囲判定
+bool rangeCheck(ll row, ll height, ll col, ll width) {
+	if (row >= 0 && row < height && col >= 0 && col < width)	return true;
+	else return false;
+}
+
 // 迷路用幅優先探索
 // フィールドの広さと壁の位置を受け取り、ゴールへの最短距離を返す
-ll bfs_maze(vector<string> &str, ll s_y, ll s_x, ll g_y, ll g_x)
+ll bfs_maze(vector<string>& str, ll s_y, ll s_x, ll g_y, ll g_x)
 {
+
 	struct Corr
 	{
 		ll y;
@@ -270,7 +288,7 @@ ll bfs_maze(vector<string> &str, ll s_y, ll s_x, ll g_y, ll g_x)
 	v = map_vec(str);
 
 	// スタート地点を含めるのか
-	que.push({s_y, s_x, 0});
+	que.push({ s_y, s_x, 0 });
 	while (!que.empty())
 	{
 		Corr now = que.front();
@@ -280,9 +298,9 @@ ll bfs_maze(vector<string> &str, ll s_y, ll s_x, ll g_y, ll g_x)
 
 		REP(i, 4)
 		{
-			Corr next = {now.y + dy[i], now.x + dx[i], now.depth + 1};
+			Corr next = { now.y + dy4[i], now.x + dx4[i], now.depth + 1 };
 			// SZ(v[0] = SZ(v[distance(v.begin(), max_element(ALL(v)))])
-			if (0 <= (int)next.y && (int)next.y < SZ(v) && 0 <= (int)next.x && (int)next.x < SZ(v[distance(v.begin(), max_element(ALL(v)))]) && v[(int)next.y][(int)next.x] == INF)
+			if (rangeCheck((int)next.y, SZ(v), (int)next.x, SZ(v[distance(v.begin(), max_element(ALL(v)))])) && v[(int)next.y][(int)next.x] == INF)
 			{
 				v[(int)next.y][(int)next.x] = next.depth;
 				que.push(next);
@@ -383,9 +401,9 @@ void ans_vec(vector<ll> ans)
 {
 	REP(i, SZ(ans))
 	{
-		cout << ans[i] << " ";
+		cout << ans[i] << endl;
 	}
-	cout << endl;
+	//cout << endl;
 }
 
 //
@@ -434,7 +452,7 @@ vector<ll> makeDivisors(ll n)
 }
 
 // 尺取り法
-ll shakutori(vector<ll> &v, ll x)
+ll shakutori(vector<ll>& v, ll x)
 {
 	ll res = 0;
 	ll n = SZ(v);
@@ -461,9 +479,33 @@ ll shakutori(vector<ll> &v, ll x)
 	return res;
 }
 
+
+vector<bool> seen;
+vector<vector<ll>> pa;
 // 深さ優先探索
-void dfs(const Graph &g, ll x)
+void dfs(const Graph& g, ll x, ll& cnt)
 {
+	seen[x] = true; // v を訪問済にする
+	pa[x][0] = cnt;
+	cnt++;
+
+	// v から行ける各頂点 next_v について
+	for (auto next_x : g[x]) {
+		if (seen[next_x]) continue; // next_v が探索済だったらスルー
+		dfs(g, next_x, cnt); // 再帰的に探索
+	}
+	pa[x][1] = cnt;
+	cnt++;
+}
+
+//
+void dfs_maze(vector<vector<ll>>& maps, ll row, ll col, ll& cnt) {
+	if (rangeCheck(row, SZ(maps), col, SZ(maps[0])) && maps[row][col]) {
+		maps[row][col] = 0;
+		REP(k, 8) {
+			dfs_maze(maps, row + dy8[k], col + dx8[k], cnt);
+		}
+	}
 }
 
 // 幅優先探索
@@ -501,7 +543,7 @@ vector<string> split(string s, string delim)
 	if (s.empty())
 		return {};
 	if (delim.empty())
-		return {s};
+		return { s };
 	int start = 0;
 	auto delim_pos = s.find(delim);
 	vector<string> ret_v;
@@ -528,11 +570,11 @@ main()
 	//ios::sync_with_stdio(false);
 
 	// 変数（scala）取得
-	ll n;
-	cin >> n;
+	//ll n;
+	//cin >> n;
 
 	// 変数（vector）取得
-	// vector<ll> a(n);
+	// vector<ll> a;
 	// a = INV(n);
 	////m=2;
 	//vector<vector<ll>> vec(n, vector<ll>(m));
@@ -592,7 +634,7 @@ main()
 	// 実装部分
 	//
 
-	ll ans;
+	ll ans = 0;
 
 	//
 	// 実装部分おわり
@@ -600,8 +642,8 @@ main()
 
 	// 解答出力
 	// cout << fixed << setprecision(10);
-	MSG(ans);
-	//ans_vec(ans);
+	 MSG(ans);
+	// ans_vec(ans);
 
 	return 0;
 }
